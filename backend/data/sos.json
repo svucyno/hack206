@@ -1,0 +1,44 @@
+[
+  {
+    "id": "REQ-001",
+    "location": "Sector 4, Low-lying Area",
+    "status": "Needs Evacuation",
+    "time": "10 mins ago",
+    "createdAt": "2026-04-04T14:50:00Z"
+  },
+  {
+    "id": "REQ-002",
+    "location": "Main Road (Tree Fallen)",
+    "status": "Medical Help",
+    "time": "25 mins ago",
+    "createdAt": "2026-04-04T14:35:00Z"
+  },
+  {
+    "id": "REQ-003",
+    "location": "kadapa",
+    "status": "Needs Help",
+    "time": "Just now",
+    "createdAt": "2026-04-04T15:30:41.200Z"
+  },
+  {
+    "id": "REQ-004",
+    "location": "thirupathi",
+    "status": "Needs Help",
+    "time": "Just now",
+    "createdAt": "2026-04-05T10:15:12.291Z"
+  },
+  {
+    "id": "REQ-005",
+    "location": "Unknown Location",
+    "status": "Needs Help",
+    "time": "Just now",
+    "createdAt": "2026-04-05T10:30:58.479Z"
+  },
+  {
+    "id": "REQ-006",
+    "location": "Unknown Location",
+    "status": "Needs Help",
+    "time": "Just now",
+    "createdAt": "2026-04-05T10:31:07.171Z"
+  }
+]

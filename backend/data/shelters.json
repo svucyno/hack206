@@ -1,0 +1,5 @@
+[
+  { "id": 1, "lat": 17.6868, "lng": 83.2185, "name": "Govt School Relief Camp", "type": "safe",    "capacity": 300, "occupied": 180 },
+  { "id": 2, "lat": 17.7011, "lng": 83.2750, "name": "Community Hall",          "type": "safe",    "capacity": 150, "occupied": 90  },
+  { "id": 3, "lat": 17.6900, "lng": 83.2500, "name": "Flood Danger Zone",       "type": "danger",  "radius": 2000 }
+]

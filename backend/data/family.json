@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Lakshmi (Mother)", "status": "safe",    "phone": "9876500001" },
+  { "id": 2, "name": "Raju (Brother)",   "status": "missing", "phone": "9876500002" },
+  { "id": 3, "name": "Suresh (Father)",  "status": "safe",    "phone": "9876500003" }
+]

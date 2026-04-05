@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Guard AI — Disaster Intelligence for Coastal Andhra Pradesh</title>
+    <meta name="description" content="AI-powered disaster intelligence platform for coastal Andhra Pradesh. Real-time alerts, shelter tracking, SOS response, and community reporting.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="show-home">
+    <!-- ===== HOME / LANDING PAGE ===== -->
+    <div id="home-page" class="home-page">
+        <!-- Animated background particles -->
+        <div class="home-bg">
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+        </div>
+
+        <nav class="home-nav">
+            <div class="home-logo">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Coastal Guard AI</span>
+            </div>
+            <div class="home-nav-links">
+                <a href="#home-features">Features</a>
+                <a href="#home-about">About</a>
+                <button id="home-launch-btn" class="btn btn-primary home-cta-sm">Launch App</button>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div class="hero-badge">
+                <i class="fa-solid fa-satellite-dish"></i> Live Disaster Intelligence
+            </div>
+            <h1 class="hero-title">
+                Protect Coastal Communities<br>
+                <span class="gradient-text">with AI-Powered Intelligence</span>
+            </h1>
+            <p class="hero-subtitle">
+                Real-time cyclone alerts, shelter mapping, SOS response, and community reporting
+                for coastal Andhra Pradesh — powered by AI.
+            </p>
+            <div class="hero-actions">
+                <button id="get-started-btn" class="btn btn-primary btn-hero">
+                    <i class="fa-solid fa-rocket"></i> Get Started
+                </button>
+                <a href="#home-features" class="btn btn-outline-hero">
+                    <i class="fa-solid fa-circle-info"></i> Learn More
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="h-stat">
+                    <span class="h-stat-num">1,245+</span>
+                    <span class="h-stat-label">People Sheltered</span>
+                </div>
+                <div class="h-stat-divider"></div>
+                <div class="h-stat">
+                    <span class="h-stat-num">24</span>
+                    <span class="h-stat-label">Active Alerts</span>
+                </div>
+                <div class="h-stat-divider"></div>
+                <div class="h-stat">
+                    <span class="h-stat-num">89</span>
+                    <span class="h-stat-label">Community Reports</span>
+                </div>
+                <div class="h-stat-divider"></div>
+                <div class="h-stat">
+                    <span class="h-stat-num">99.9%</span>
+                    <span class="h-stat-label">Uptime</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-features-section" id="home-features">
+            <h2 class="section-title">Everything You Need to Stay Safe</h2>
+            <p class="section-subtitle">Six integrated modules working together to protect you and your community.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(59,130,246,0.15);color:#3b82f6">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3>AI Risk Prediction</h3>
+                    <p>Machine-learning risk engine analyzes weather, tide, and historical data to forecast disaster likelihood in real time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(16,185,129,0.15);color:#10b981">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3>Interactive Map</h3>
+                    <p>Live map showing safe shelters, danger zones, and gas distributors across coastal Andhra Pradesh.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(239,68,68,0.15);color:#ef4444">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h3>Emergency SOS</h3>
+                    <p>One-tap SOS alert that instantly notifies rescue teams and family via SMS, WhatsApp, and GPS location.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <h3>Community Reports</h3>
+                    <p>Report and browse flood damage, blocked roads, and gas shortages submitted by your neighbors in real time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(168,85,247,0.15);color:#a855f7">
+                        <i class="fa-solid fa-fire-flame-simple"></i>
+                    </div>
+                    <h3>Gas Tracking</h3>
+                    <p>Track nearby gas distributor availability with smart alerts when shortages are predicted during disasters.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:rgba(20,184,166,0.15);color:#14b8a6">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3>AI Chatbot</h3>
+                    <p>Bilingual AI assistant (English &amp; Telugu) answers questions about shelters, evacuation routes, and survival tips.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-about-section" id="home-about">
+            <div class="about-content">
+                <div class="about-text">
+                    <span class="about-badge">Our Mission</span>
+                    <h2>Built for Coastal Andhra Pradesh</h2>
+                    <p>Coastal Andhra Pradesh faces recurring cyclones, floods, and natural disasters every year. Coastal Guard AI was built as a unified command platform for citizens, rescue teams, and local authorities to coordinate and respond faster than ever before.</p>
+                    <ul class="about-list">
+                        <li><i class="fa-solid fa-check-circle"></i> Telugu-language voice alerts for wider reach</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Works on mobile with offline-first design</li>
+                        <li><i class="fa-solid fa-check-circle"></i> AI predictions updated every 15 minutes</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Free and open for all communities</li>
+                    </ul>
+                    <button id="about-launch-btn" class="btn btn-primary" style="margin-top:1.5rem">
+                        <i class="fa-solid fa-arrow-right"></i> Open Dashboard
+                    </button>
+                </div>
+                <div class="about-visual">
+                    <div class="visual-card vc1">
+                        <i class="fa-solid fa-cloud-bolt"></i>
+                        <span>Cyclone Michaung</span>
+                        <small>High Risk Detected ✓</small>
+                    </div>
+                    <div class="visual-card vc2">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Shelter Found</span>
+                        <small>2.4 km away ✓</small>
+                    </div>
+                    <div class="visual-card vc3">
+                        <i class="fa-solid fa-people-group"></i>
+                        <span>Family Safe</span>
+                        <small>All 4 members tracked ✓</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="home-footer">
+            <div class="home-logo">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Coastal Guard AI</span>
+            </div>
+            <p>Built for Hackathon 2026 · Protecting Coastal Andhra Pradesh</p>
+        </footer>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="app-container" id="main-app" style="display:none">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h2>Crisis AI</h2>
+            </div>
+            <ul class="nav-links">
+                <li id="nav-home" data-action="home"><i class="fa-solid fa-house"></i> <span>Home</span></li>
+                <li class="active" data-target="dashboard"><i class="fa-solid fa-chart-line"></i> <span>Dashboard</span></li>
+                <li data-target="resources-page"><i class="fa-solid fa-boxes-stacked"></i> <span>Resources</span></li>
+                <li data-target="nearby-page"><i class="fa-solid fa-location-crosshairs"></i> <span>Nearby Finder</span></li>
+                <li data-target="map-view"><i class="fa-solid fa-map-location-dot"></i> <span>Map View</span></li>
+                <li data-target="sos-page" class="nav-alert"><i class="fa-solid fa-triangle-exclamation"></i> <span>SOS</span></li>
+                <li data-target="reports-page"><i class="fa-solid fa-file-lines"></i> <span>Reports</span></li>
+                <li data-target="gas-page"><i class="fa-solid fa-boxes-packing"></i> <span>Resource Tracker</span></li>
+                <li data-target="chat-page"><i class="fa-solid fa-robot"></i> <span>AI Chatbot</span></li>
+                <li data-target="admin-page"><i class="fa-solid fa-user-shield"></i> <span>Admin</span></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <h3><span id="current-page-title">Dashboard</span></h3>
+                <div class="header-actions">
+                    <button id="voice-alert-btn" class="btn btn-icon"><i class="fa-solid fa-volume-high"></i> Telugu Alert</button>
+                    <div class="status-indicator online" id="connection-status">Online</div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                
+                <!-- Offline Tips Banner -->
+                <div id="offline-tips" class="card highlight-card mb-4" style="border-left-color: var(--warning); background: rgba(245, 158, 11, 0.1); display: none;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: var(--warning);"></i>
+                    <div>
+                        <strong>Offline Mode Active - Survival Tips</strong>
+                        <ul class="tips-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                            <li><strong>Gas Shortage:</strong> Use alternative fuels, cook minimal meals.</li>
+                            <li><strong>Food Shortage:</strong> Ration supplies, use dry foods.</li>
+                            <li><strong>Water Shortage:</strong> Boil water, store safely.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 1. Dashboard View -->
+                <section id="dashboard" class="page-section active">
+                    <div class="dashboard-grid">
+                        <!-- AI Risk Card -->
+                        <div class="card risk-card">
+                            <div class="card-header">
+                                <h4>AI Risk Prediction</h4>
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <div class="risk-status" id="risk-display">
+                                <div class="risk-badge badge-high pulse">HIGH RISK</div>
+                                <p>Cyclone warning. Move to higher ground.</p>
+                            </div>
+                        </div>
+
+                        <!-- Weather Data -->
+                        <div class="card weather-card">
+                            <div class="card-header">
+                                <h4>Live Weather</h4>
+                                <i class="fa-solid fa-cloud-bolt"></i>
+                            </div>
+                            <div class="weather-data">
+                                <div class="w-item"><i class="fa-solid fa-temperature-empty"></i> <span id="w-temp">28°C</span></div>
+                                <div class="w-item"><i class="fa-solid fa-wind"></i> <span id="w-wind">85 km/h</span></div>
+                                <div class="w-item"><i class="fa-solid fa-cloud-showers-heavy"></i> <span id="w-rain">120 mm</span></div>
+                                <div class="w-item" style="color: var(--danger);"><i class="fa-solid fa-house-crack"></i> <span id="w-quake">Mag 5.8</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Prepare Score -->
+                        <div class="card prep-card">
+                            <div class="card-header">
+                                <h4>Preparedness Score</h4>
+                                <i class="fa-solid fa-clipboard-check"></i>
+                            </div>
+                            <div class="score-circle">
+                                <span id="prep-score">45%</span>
+                            </div>
+                            <button class="btn btn-primary btn-small mt-2" onclick="startPrepQuiz()">Update Score</button>
+                        </div>
+                    </div>
+
+                    <!-- Resource Availability Dashboard -->
+                    <div class="row-2 mt-4 mb-4">
+                        <div class="card full-width">
+                            <div class="card-header">
+                                <h4>Resource Availability</h4>
+                            </div>
+                            <div class="resource-dash-grid">
+                                <div class="res-dash-item"><i class="fa-solid fa-bowl-food"></i> Food <span class="res-status available" id="dash-food">✅</span></div>
+                                <div class="res-dash-item"><i class="fa-solid fa-droplet"></i> Water <span class="res-status low" id="dash-water">⚠️</span></div>
+                                <div class="res-dash-item"><i class="fa-solid fa-kit-medical"></i> Medical <span class="res-status available" id="dash-med">✅</span></div>
+                                <div class="res-dash-item"><i class="fa-solid fa-fire-flame-simple"></i> LPG Gas <span class="res-status out" id="dash-gas">❌</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts & Family status -->
+                    <div class="row-2">
+                        <div class="card full-width">
+                            <div class="card-header">
+                                <h4>Family Safety Tracker</h4>
+                                <button id="add-family-btn" class="btn btn-icon btn-small"><i class="fa-solid fa-plus"></i> Add</button>
+                            </div>
+                            <div class="family-list" id="family-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NEW: Resources Page -->
+                <section id="resources-page" class="page-section hidden">
+                    <div class="card mb-4">
+                        <h4>Emergency Supply & Distribution Centers</h4>
+                        <p class="text-muted mb-4">Track the current status of all relief centers and distribution points.</p>
+                        
+                        <div class="resource-categories">
+                            <h5><i class="fa-solid fa-bowl-food" style="color:var(--primary)"></i> Food Supply Centers</h5>
+                            <div id="food-centers-list" class="resource-list mb-4">
+                                <!-- Populated by JS -->
+                            </div>
+
+                            <h5><i class="fa-solid fa-droplet" style="color:#0ea5e9"></i> Drinking Water Points</h5>
+                            <div id="water-points-list" class="resource-list mb-4">
+                                <!-- Populated by JS -->
+                            </div>
+
+                            <h5><i class="fa-solid fa-kit-medical" style="color:var(--danger)"></i> Medical Help</h5>
+                            <div id="medical-centers-list" class="resource-list mb-4">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NEW: Nearby Finder Page -->
+                <section id="nearby-page" class="page-section hidden">
+                    <div class="card mb-4 highlight-card" style="border-left-color: var(--primary); background: rgba(59, 130, 246, 0.1);">
+                        <i class="fa-solid fa-location-crosshairs" style="color: var(--primary);"></i>
+                        <div>
+                            <strong>Nearby Availability Tracker</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Finding closest available resources based on your simulated GPS location.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Nearest Food</h5>
+                                <i class="fa-solid fa-bowl-food"></i>
+                            </div>
+                            <div id="nearest-food" class="nearby-result">
+                                <!-- JS -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Nearest Water</h5>
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <div id="nearest-water" class="nearby-result">
+                                <!-- JS -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Nearest Gas</h5>
+                                <i class="fa-solid fa-fire-flame-simple"></i>
+                            </div>
+                            <div id="nearest-gas" class="nearby-result">
+                                <!-- JS -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Nearest Medical</h5>
+                                <i class="fa-solid fa-kit-medical"></i>
+                            </div>
+                            <div id="nearest-medical" class="nearby-result">
+                                <!-- JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Map View -->
+                <section id="map-view" class="page-section hidden">
+                    <div class="map-controls">
+                        <button class="btn btn-secondary btn-small" id="toggle-satellite">Toggle Satellite</button>
+                        <button class="btn btn-primary btn-small" id="map-locate-btn"><i class="fa-solid fa-location-crosshairs"></i> Center on Me</button>
+                        <div class="map-legend">
+                            <span class="legend-item"><span class="dot red"></span> Danger</span>
+                            <span class="legend-item"><span class="dot green"></span> Safe/Shelter</span>
+                            <span class="legend-item"><span class="dot yellow"></span> Gas</span>
+                        </div>
+                    </div>
+                    <div id="map-container"></div>
+                </section>
+
+                <!-- 3. SOS Page -->
+                <section id="sos-page" class="page-section hidden">
+                    <div class="sos-container">
+                        <button class="sos-button pulse-large" id="main-sos-btn">
+                            <i class="fa-solid fa-exclamation"></i>
+                            <span>SOS</span>
+                        </button>
+                        <p class="sos-help-text">Tap instantly to alert rescue teams and family.</p>
+                        
+                        <div class="channel-options">
+                            <label><input type="checkbox" checked> SMS</label>
+                            <label><input type="checkbox" checked> WhatsApp</label>
+                            <label><input type="checkbox" checked> Location</label>
+                        </div>
+
+                        <div class="active-requests card mt-4">
+                            <h4>Active Rescue Requests</h4>
+                            <div id="rescue-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="card mt-4" style="text-align: left; width: 100%;">
+                            <h4>Evacuation Guidance</h4>
+                            <div id="evacuation-list" class="resource-list mt-4">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Reports Page -->
+                <section id="reports-page" class="page-section hidden">
+                    <div class="card">
+                        <h4>Submit a Report</h4>
+                        <form id="report-form" class="report-form">
+                            <select id="report-type" class="form-input">
+                                <option value="flood">Flood / Damage</option>
+                                <option value="road">Blocked Road</option>
+                                <option value="gas">Gas Unavailable</option>
+                            </select>
+                            <textarea id="report-desc" class="form-input" placeholder="Describe the situation..." rows="3"></textarea>
+                            <button type="submit" class="btn btn-primary">Submit Report <i class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                    <div class="card mt-4">
+                        <h4>Community Feed</h4>
+                        <div id="report-feed">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. Resource Tracker Page -->
+                <section id="gas-page" class="page-section hidden">
+                    <div class="card highlight-card mb-4" id="resource-alert">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span><strong>Resource Tracker:</strong> Monitor live availability of LPG Gas and Essential Food Kits across distribution centers.</span>
+                    </div>
+                    
+                    <div class="resource-grid">
+                        <div class="card">
+                            <h4><i class="fa-solid fa-fire-flame-simple" style="color:var(--primary)"></i> LPG Gas Inventory</h4>
+                            <p class="text-muted mb-2">Nearby distributors and current stock levels.</p>
+                            <div id="gas-list" class="resource-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h4><i class="fa-solid fa-bowl-food" style="color:var(--success)"></i> Essential Food Kits</h4>
+                            <p class="text-muted mb-2">Relief camps and food distribution points.</p>
+                            <div id="food-list" class="resource-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <h4>Resource Conservation Tips</h4>
+                        <div class="dashboard-grid">
+                            <ul class="tips-list">
+                                <li><strong>Cooking:</strong> Use covers to save 20% gas; prefer one-pot meals.</li>
+                                <li><strong>Storage:</strong> Keep dry foods in waterproof containers.</li>
+                            </ul>
+                            <ul class="tips-list">
+                                <li><strong>Distribution:</strong> Carry ID cards & ration tokens to centers.</li>
+                                <li><strong>Community:</strong> Share surplus with neighbors in need.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Chatbot Page -->
+                <section id="chat-page" class="page-section hidden">
+                    <div class="chat-container card">
+                        <div class="chat-history" id="chat-history">
+                            <div class="chat-message bot">
+                                <p>Hello, I am Crisis AI. How can I help you survive? Ask me about floods, shelters, or gas shortages.</p>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chat-input" placeholder="Type 'Nearest shelter'...">
+                            <button id="send-chat" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                        <div class="chat-suggestions">
+                            <span class="chat-chip">What to do in flood?</span>
+                            <span class="chat-chip">Nearest shelter?</span>
+                            <span class="chat-chip">Gas shortage lo em cheyali?</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. Admin Panel -->
+                <section id="admin-page" class="page-section hidden">
+                    <div class="admin-grid">
+                        <div class="card stat-card">
+                            <h4>Active Alerts</h4>
+                            <div class="stat-number text-red">24</div>
+                        </div>
+                        <div class="card stat-card">
+                            <h4>People in Shelters</h4>
+                            <div class="stat-number text-green">1,245</div>
+                        </div>
+                        <div class="card stat-card">
+                            <h4>Gas Shortage Reports</h4>
+                            <div class="stat-number text-yellow">89</div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <h4>System Analytics Graph</h4>
+                        <div class="mock-graph">
+                            <div class="bar" style="height: 40%"></div>
+                            <div class="bar" style="height: 60%"></div>
+                            <div class="bar" style="height: 90%; background: var(--danger)"></div>
+                            <div class="bar" style="height: 70%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-4">
+                        <h4>Resource Shortages Tracker</h4>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Region</th>
+                                    <th>Resource</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Sector 4</td><td>LPG Gas</td><td class="text-red">Critical Shortage</td></tr>
+                                <tr><td>Main Road</td><td>Food</td><td class="text-yellow">Limited Supply</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card mt-4">
+                <h4>System SMS API Panel</h4>
+                <form id="admin-sms-form" class="report-form mt-2">
+                    <div class="dashboard-grid">
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted);">Recipient Number</label>
+                            <input type="text" id="sms-to" class="form-input" placeholder="+910000000000">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted);">Alert Message</label>
+                            <input type="text" id="sms-msg" class="form-input" placeholder="Type emergency alert here...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="send-direct-sms-btn">
+                        <i class="fa-solid fa-paper-plane"></i> Send Direct SMS Alert (API)
+                    </button>
+                </form>
+            </div>
+        </section>
+
+            </div>
+        </main>
+
+        <!-- Modals or overlays can go here -->
+    </div>
+    <!-- End main-app -->
+
+    <!-- Scripts -->
+    <!-- Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Firebase SDK (Standard Modern Modular or Compat - Using Compat for simplicity in this project) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <!-- Configuration -->
+    <script src="config.js"></script>
+
+    <!-- Application Components -->
+    <script src="components/mockData.js"></script>
+    <script src="components/map.js"></script>
+    <script src="components/chatbot.js"></script>
+    <script src="app.js"></script>
+    <div id="toast-container" class="toast-container"></div>
+</body>
+</html>

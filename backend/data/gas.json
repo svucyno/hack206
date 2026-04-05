@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Bharat Gas - Vizag Center", "distance": "2.1 km", "stock": "available", "contact": "9876543210", "lat": 17.7128, "lng": 83.2285 },
+  { "id": 2, "name": "HP Gas - Beach Road",        "distance": "3.5 km", "stock": "low",       "contact": "9876543211", "lat": 17.7250, "lng": 83.3000 },
+  { "id": 3, "name": "Indane Gas - Port Area",     "distance": "5.0 km", "stock": "out",       "contact": "9876543212", "lat": 17.6950, "lng": 83.2700 }
+]

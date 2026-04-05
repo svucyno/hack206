@@ -1,0 +1,4 @@
+[
+  { "id": 1, "user": "Kiran R.",  "type": "flood", "desc": "Water entered ground floors near Bus Stand.",         "time": "1 hr ago",  "createdAt": "2026-04-04T14:00:00Z" },
+  { "id": 2, "user": "Anita V.", "type": "gas",   "desc": "HP Gas agency says out of stock until tomorrow.",    "time": "2 hrs ago", "createdAt": "2026-04-04T13:00:00Z" }
+]

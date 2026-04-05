@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "RK Mission Relief Camp",     "distance": "1.5 km", "stock": "available", "contact": "0891-234567", "lat": 17.7100, "lng": 83.3200 },
+  { "id": 2, "name": "Vizag Food Bank - MVP",      "distance": "4.2 km", "stock": "low",       "contact": "9848011223", "lat": 17.7400, "lng": 83.3300 },
+  { "id": 3, "name": "Community Kitchen - Gajuwaka","distance": "7.8 km", "stock": "available", "contact": "9966554433", "lat": 17.6900, "lng": 83.2100 }
+]
