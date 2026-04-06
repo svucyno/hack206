@@ -1,6 +1,6 @@
-# Coastal Guard AI — Backend
+# Crisis AI — Backend
 
-A simple Node.js + Express REST API for the Coastal Guard AI platform.
+A simple Node.js + Express REST API for the Crisis AI platform.
 
 ---
 
@@ -23,7 +23,7 @@ node server.js
 
 You should see:
 ```
-🛡️  Coastal Guard AI Backend is running!
+🛡️  Crisis AI Backend is running!
 🌐  API URL: http://localhost:4000
 ```
 

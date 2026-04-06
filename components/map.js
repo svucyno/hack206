@@ -61,16 +61,28 @@ document.addEventListener('DOMContentLoaded', () => {
         iconSize: [20, 20]
     });
 
-    // 4. Marker Rendering Function
-    const markerLayerGroup = L.layerGroup().addTo(map);
+    // 4. Layer Groups & Marker Rendering
+    const sheltersLayer = L.layerGroup().addTo(map);
+    const resourcesLayer = L.layerGroup().addTo(map);
+    const dangerLayer = L.layerGroup().addTo(map);
+
+    // Add Layer Control
+    const overlayMaps = {
+        "Safe Shelters": sheltersLayer,
+        "Gas & Food Resources": resourcesLayer,
+        "Danger Zones": dangerLayer
+    };
+    L.control.layers(null, overlayMaps, { position: 'topright' }).addTo(map);
 
     function renderMarkers(shelters, gasLocations, dangerZones) {
-        markerLayerGroup.clearLayers();
+        sheltersLayer.clearLayers();
+        resourcesLayer.clearLayers();
+        dangerLayer.clearLayers();
 
         // Shelters
         shelters.forEach(shelter => {
             L.marker([shelter.lat, shelter.lng], { icon: safeIcon })
-                .addTo(markerLayerGroup)
+                .addTo(sheltersLayer)
                 .bindPopup(`<b>${shelter.name}</b><br>Status: Safe Zone`);
         });
 
@@ -78,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gasLocations.forEach(loc => {
             const icon = loc.type === 'gas-green' || loc.stock === 'available' ? gasGreenIcon : gasYellowIcon;
             L.marker([loc.lat, loc.lng], { icon: icon })
-                .addTo(markerLayerGroup)
+                .addTo(resourcesLayer)
                 .bindPopup(`<b>${loc.name}</b><br>Resource: ${loc.type?.includes('food') ? 'Food Kit' : 'LPG Gas'}<br>Stock: ${loc.stock || 'Unknown'}<br><button class='btn btn-small mt-2' onclick='alert("Navigating to ${loc.name}...")'>Navigate</button>`);
         });
 
@@ -89,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 fillColor: '#ef4444',
                 fillOpacity: 0.3,
                 radius: zone.radius || 500
-            }).addTo(markerLayerGroup).bindPopup('<b>Danger Zone</b><br>High risk area. Exercise caution.');
+            }).addTo(dangerLayer).bindPopup('<b>Danger Zone</b><br>High risk area. Exercise caution.');
         });
     }
 
     // 5. Initial Render & Live Refresh
-    async function refreshMapData() {
+    window.refreshMapData = async function refreshMapData() {
         const API_URL = window.CONFIG ? window.CONFIG.BACKEND_URL : 'http://localhost:4000/api';
         
         try {
@@ -106,17 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ]);
 
             const finalShelters = shelters || window.mockData.shelters;
-            const finalGas      = (gas || window.mockData.gasLocations).concat(food || []);
-            const dangerZones   = window.mockData.dangerZones; // Danger zones usually stay static for now
+            // Proper merge handling
+            const finalGas = (gas || window.mockData.gasLocations).concat(food || []);
 
-            renderMarkers(finalShelters, finalGas, dangerZones);
+            renderMarkers(finalShelters, finalGas, window.mockData.dangerZones);
             console.log('🗺️ Map markers synced with backend.');
 
         } catch (err) {
             console.warn('Map sync failed, using mockData:', err);
             renderMarkers(window.mockData.shelters, window.mockData.gasLocations, window.mockData.dangerZones);
         }
-    }
+    };
 
     // Initial load
     refreshMapData();

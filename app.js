@@ -1,5 +1,5 @@
 // ============================================================
-//  Coastal Guard AI — Frontend App Logic
+//  Crisis AI — Frontend App Logic
 //  Tries to load data from the backend API (http://localhost:4000)
 //  If the backend is offline, falls back to mockData automatically
 // ============================================================
@@ -121,17 +121,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
+            const targetId = link.getAttribute('data-target');
+            if (!targetId || !document.getElementById(targetId)) return;
+
+            // Highlight nav link
             navLinks.forEach(nav => nav.classList.remove('active'));
             link.classList.add('active');
+
+            // Update title
             pageTitle.textContent = link.querySelector('span').textContent;
 
-            const targetId = link.getAttribute('data-target');
-            sections.forEach(sec => sec.classList.remove('active'));
-            document.getElementById(targetId).classList.add('active');
+            // Switch section
+            sections.forEach(sec => {
+                sec.classList.remove('active');
+                sec.classList.add('hidden'); // Ensure it's hidden when not active
+            });
 
+            const targetSection = document.getElementById(targetId);
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('active');
+
+            // Feature specific refreshes
             if (targetId === 'map-view' && window.mapInstance) {
-                setTimeout(() => window.mapInstance.invalidateSize(), 100);
+                // Delay a bit more to ensure the section is fully visible before resizing
+                setTimeout(() => {
+                    window.mapInstance.invalidateSize();
+                    // Also trigger a data refresh on the map
+                    if (typeof window.refreshMapData === 'function') window.refreshMapData();
+                }, 200);
             }
+
+            if (targetId === 'nearby-page') loadNearby();
+            if (targetId === 'gas-page') { loadGas(); loadFood(); loadAdditionalResources(); }
+            if (targetId === 'reports-page') loadReports();
+            if (targetId === 'sos-page') loadSOS();
+            if (targetId === 'dashboard') { loadRisk(); loadSmartSuggestions(); }
         });
     });
 
@@ -439,6 +463,37 @@ document.addEventListener('DOMContentLoaded', async () => {
             render(window.mockData.foodCenters);
         }
     }
+
+    // --- 6c. Load & Render Additional Resources (Water, Medical, Shelters) ---
+    async function loadAdditionalResources() {
+        const renderList = (id, data, emptyMsg) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.innerHTML = '';
+            if (!data || data.length === 0) { el.innerHTML = `<p>${emptyMsg}</p>`; return; }
+            data.forEach(item => {
+                let statusClass = 'available';
+                let statusText = 'Available ✅';
+                let rawStatus = item.status || item.type || 'available';
+                if (rawStatus.includes('low') || rawStatus.includes('limited')) { statusClass = 'low'; statusText = 'Low Stock ⚠️'; }
+                if (rawStatus === 'unavailable' || rawStatus === 'critical') { statusClass = 'out'; statusText = 'Unavailable ❌'; }
+                if (rawStatus === 'safe') { statusClass = 'available'; statusText = 'Safe Zone ✅'; }
+
+                el.innerHTML += `
+                    <div class="res-item">
+                        <div>
+                            <strong>${item.name}</strong>
+                            <p style="font-size:0.85rem;color:var(--text-muted)"><i class="fa-solid fa-location-arrow"></i> ${item.distance || 'Calculated live in Nearby Finder'}</p>
+                        </div>
+                        <div class="res-status ${statusClass}">${statusText}</div>
+                    </div>`;
+            });
+        };
+
+        renderList('water-list', window.mockData.waterPoints, 'No water points found.');
+        renderList('medical-list', window.mockData.medicalCenters, 'No medical centers found.');
+        renderList('shelter-list', window.mockData.shelters, 'No safe shelters found.');
+    }
     
     // Admin SMS Form listener
     const smsForm = document.getElementById('admin-sms-form');
@@ -460,50 +515,57 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- 7. Load & Render Supply Centers (Resources) ---
-    async function loadResources() {
-        const renderList = (id, data, emptyMsg) => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.innerHTML = '';
-            if (!data || data.length === 0) { el.innerHTML = `<p>${emptyMsg}</p>`; return; }
-            data.forEach(item => {
-                let statusClass = 'available';
-                let statusText = 'Available ✅';
-                if (item.status === 'limited' || item.status === 'low') { statusClass = 'low'; statusText = 'Low Stock ⚠️'; }
-                if (item.status === 'unavailable' || item.status === 'critical') { statusClass = 'out'; statusText = 'Unavailable ❌'; }
-                el.innerHTML += `
-                    <div class="res-item">
-                        <div>
-                            <strong>${item.name}</strong>
-                            <p style="font-size:0.85rem;color:var(--text-muted)"><i class="fa-solid fa-location-arrow"></i> ${item.distance}</p>
-                        </div>
-                        <div class="res-status ${statusClass}">${statusText}</div>
-                    </div>`;
-            });
-        };
 
-        renderList('food-centers-list', window.mockData.foodCenters, 'No food centers found.');
-        renderList('water-points-list', window.mockData.waterPoints, 'No water points found.');
-        renderList('medical-centers-list', window.mockData.medicalCenters, 'No medical centers found.');
+    // --- Haversine Distance Helper ---
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+        const R = 6371; // km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return parseFloat((R * c).toFixed(1));
     }
 
-    // --- 8. Load & Render Nearby Finder ---
     async function loadNearby() {
+        const userLat = window.CONFIG ? window.CONFIG.DEFAULT_COORDS.lat : 17.6868;
+        const userLng = window.CONFIG ? window.CONFIG.DEFAULT_COORDS.lng : 83.2185;
+        // In a real app we would use navigator.geolocation.getCurrentPosition here
+
         const populateNearby = (id, dataArr) => {
             const el = document.getElementById(id);
             if (!el || !dataArr || dataArr.length === 0) return;
-            const nearest = dataArr[0]; // mockData is already sorted roughly by distance
+            
+            // Map true distances
+            const mapped = dataArr.map(item => {
+                const calculatedDist = calculateDistance(userLat, userLng, item.lat, item.lng);
+                return {
+                    ...item,
+                    calculatedDist: calculatedDist !== null ? calculatedDist : parseFloat(item.distance || "999")
+                };
+            });
+
+            // Sort purely by the calculated haversine distance
+            mapped.sort((a, b) => a.calculatedDist - b.calculatedDist);
+            const nearest = mapped[0]; 
+
             let color = 'var(--success)';
-            if(nearest.status.includes('low') || nearest.status.includes('limited')) color = 'var(--warning)';
-            if(nearest.status === 'unavailable' || nearest.status === 'critical' || nearest.stock === 'out') color = 'var(--danger)';
+            let statusBadge = (nearest.status || nearest.stock || nearest.type || "unknown").toUpperCase();
+            if(statusBadge.toLowerCase().includes('low') || statusBadge.toLowerCase().includes('limited')) color = 'var(--warning)';
+            if(statusBadge.toLowerCase() === 'unavailable' || statusBadge.toLowerCase() === 'critical' || statusBadge.toLowerCase() === 'out') color = 'var(--danger)';
+            
+            const navLink = `https://www.google.com/maps/dir/?api=1&destination=${nearest.lat},${nearest.lng}`;
+
             el.innerHTML = `
                 <div style="font-weight: 600; font-size: 1.1rem;">${nearest.name}</div>
-                <div style="color: var(--text-muted);"><i class="fa-solid fa-route"></i> ${nearest.distance} away</div>
-                <div style="color: ${color}; font-weight: 600; margin-top: 0.5rem;">${nearest.status ? nearest.status.toUpperCase() : nearest.stock.toUpperCase()}</div>
-                <button class="btn btn-secondary btn-small mt-2"><i class="fa-solid fa-diamond-turn-right"></i> Navigate (Simulated)</button>
+                <div style="color: var(--text-muted);"><i class="fa-solid fa-route"></i> ${nearest.calculatedDist} km away (Actual)</div>
+                <div style="color: ${color}; font-weight: 600; margin-top: 0.5rem;">${statusBadge}</div>
+                <button class="btn btn-secondary btn-small mt-2" onclick="window.open('${navLink}', '_blank')"><i class="fa-solid fa-diamond-turn-right"></i> Navigate (Google Maps)</button>
             `;
         };
+        populateNearby('nearest-shelter', window.mockData.shelters);
         populateNearby('nearest-food', window.mockData.foodCenters);
         populateNearby('nearest-water', window.mockData.waterPoints);
         populateNearby('nearest-gas', window.mockData.gasDistributors);
@@ -531,7 +593,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- 10. Load Admin Stats ---
+    // --- 10. Smart Suggestions Engine ---
+    async function loadSmartSuggestions() {
+        const banner = document.getElementById('smart-suggestion-banner');
+        const textEl = document.getElementById('smart-suggestion-text');
+        if (!banner || !textEl) return;
+
+        try {
+            // Fetch resources or use mock
+            const gas = (backendOnline && await apiFetch('/gas')) || window.mockData.gasDistributors;
+            const food = (backendOnline && await apiFetch('/food')) || window.mockData.foodCenters;
+
+            // Combine and filter for available items
+            let allResources = [];
+            if(gas) allResources = allResources.concat(gas.map(g => ({ ...g, displayType: 'LPG Gas', isAvailable: g.stock === 'available' })));
+            if(food) allResources = allResources.concat(food.map(f => ({ ...f, displayType: 'Food', isAvailable: f.status === 'available' })));
+
+            const available = allResources.filter(r => r.isAvailable);
+
+            if (available.length > 0) {
+                // Find nearest (assuming distance string "X km" -> float)
+                available.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
+                const nearest = available[0];
+                
+                textEl.innerHTML = `<strong>${nearest.displayType}</strong> is available at <strong>${nearest.name}</strong>, just ${nearest.distance} away.`;
+                banner.style.display = 'flex';
+            } else {
+                banner.style.display = 'none';
+            }
+        } catch (e) {
+            console.warn('Smart suggestions failed to load.');
+            banner.style.display = 'none';
+        }
+    }
+
+    // --- 11. Load Admin Stats ---
     async function loadAdminStats() {
         if (!backendOnline) return;
         
@@ -586,9 +682,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // SOS Button — posts to Firebase/API
+    // SOS Button — posts to Firebase/API and opens WhatsApp location sharing
     document.getElementById('main-sos-btn').addEventListener('click', async () => {
-        const location = prompt('📍 Enter your location (street / area name):') || 'Unknown Location';
+        const locationPrompt = prompt('📍 Enter your location (street / area name):') || 'Unknown Location';
+        
+        // Simulate live location grab for the map link
+        const userLat = window.CONFIG ? window.CONFIG.DEFAULT_COORDS.lat : 17.6868;
+        const userLng = window.CONFIG ? window.CONFIG.DEFAULT_COORDS.lng : 83.2185;
+        const mapLink = `https://www.google.com/maps/search/?api=1&query=${userLat},${userLng}`;
+        
+        const isWhatsappChecked = document.querySelector('input[type="checkbox"]:nth-child(2)')?.checked ?? true;
+        
+        if (isWhatsappChecked) {
+            const waText = encodeURIComponent(
+                `🚨 *CRISIS AI EMERGENCY SOS* 🚨\n\n` +
+                `I need urgent help! My location info:\n${locationPrompt}\n\n` +
+                `📍 *My GPS Coordinates:* ${mapLink}\n\n` +
+                `_Sent automatically via the Crisis AI Platform._`
+            );
+            
+            // This will open the native WhatsApp sharing screen on Mobile/Desktop
+            // allowing the user to select multiple contacts or a family group to blast the SOS to.
+            window.open(`whatsapp://send?text=${waText}`, '_blank');
+        }
+
+        const location = locationPrompt;
 
         if (db) {
             try {
@@ -706,10 +824,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadSOS(),
         loadGas(),
         loadFood(),
-        loadResources(),
+        loadAdditionalResources(),
         loadNearby(),
         loadEvacuation(),
-        loadAdminStats()
+        loadAdminStats(),
+        loadSmartSuggestions()
     ]);
 
 });

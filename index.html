@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coastal Guard AI — Disaster Intelligence for Coastal Andhra Pradesh</title>
+    <title>Crisis AI — Disaster Intelligence for Coastal Andhra Pradesh</title>
     <meta name="description" content="AI-powered disaster intelligence platform for coastal Andhra Pradesh. Real-time alerts, shelter tracking, SOS response, and community reporting.">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
         <nav class="home-nav">
             <div class="home-logo">
                 <i class="fa-solid fa-shield-halved"></i>
-                <span>Coastal Guard AI</span>
+                <span>Crisis AI</span>
             </div>
             <div class="home-nav-links">
                 <a href="#home-features">Features</a>
@@ -133,7 +133,7 @@
                 <div class="about-text">
                     <span class="about-badge">Our Mission</span>
                     <h2>Built for Coastal Andhra Pradesh</h2>
-                    <p>Coastal Andhra Pradesh faces recurring cyclones, floods, and natural disasters every year. Coastal Guard AI was built as a unified command platform for citizens, rescue teams, and local authorities to coordinate and respond faster than ever before.</p>
+                    <p>Coastal Andhra Pradesh faces recurring cyclones, floods, and natural disasters every year. Crisis AI was built as a unified command platform for citizens, rescue teams, and local authorities to coordinate and respond faster than ever before.</p>
                     <ul class="about-list">
                         <li><i class="fa-solid fa-check-circle"></i> Telugu-language voice alerts for wider reach</li>
                         <li><i class="fa-solid fa-check-circle"></i> Works on mobile with offline-first design</li>
@@ -167,7 +167,7 @@
         <footer class="home-footer">
             <div class="home-logo">
                 <i class="fa-solid fa-shield-halved"></i>
-                <span>Coastal Guard AI</span>
+                <span>Crisis AI</span>
             </div>
             <p>Built for Hackathon 2026 · Protecting Coastal Andhra Pradesh</p>
         </footer>
@@ -184,12 +184,11 @@
             <ul class="nav-links">
                 <li id="nav-home" data-action="home"><i class="fa-solid fa-house"></i> <span>Home</span></li>
                 <li class="active" data-target="dashboard"><i class="fa-solid fa-chart-line"></i> <span>Dashboard</span></li>
-                <li data-target="resources-page"><i class="fa-solid fa-boxes-stacked"></i> <span>Resources</span></li>
-                <li data-target="nearby-page"><i class="fa-solid fa-location-crosshairs"></i> <span>Nearby Finder</span></li>
+                <li data-target="gas-page"><i class="fa-solid fa-boxes-packing"></i> <span>Resources</span></li>
+                <li data-target="nearby-page"><i class="fa-solid fa-location-crosshairs"></i> <span>Resource Tracker</span></li>
                 <li data-target="map-view"><i class="fa-solid fa-map-location-dot"></i> <span>Map View</span></li>
                 <li data-target="sos-page" class="nav-alert"><i class="fa-solid fa-triangle-exclamation"></i> <span>SOS</span></li>
                 <li data-target="reports-page"><i class="fa-solid fa-file-lines"></i> <span>Reports</span></li>
-                <li data-target="gas-page"><i class="fa-solid fa-boxes-packing"></i> <span>Resource Tracker</span></li>
                 <li data-target="chat-page"><i class="fa-solid fa-robot"></i> <span>AI Chatbot</span></li>
                 <li data-target="admin-page"><i class="fa-solid fa-user-shield"></i> <span>Admin</span></li>
             </ul>
@@ -222,6 +221,16 @@
 
                 <!-- 1. Dashboard View -->
                 <section id="dashboard" class="page-section active">
+                    
+                    <!-- NEW: Smart Suggestions Banner -->
+                    <div id="smart-suggestion-banner" class="card highlight-card mb-4" style="border-left-color: var(--success); background: rgba(16, 185, 129, 0.1); display: none;">
+                        <i class="fa-solid fa-lightbulb" style="color: var(--success);"></i>
+                        <div>
+                            <strong>Smart Guidance</strong>
+                            <p id="smart-suggestion-text" style="font-size: 0.95rem; margin-top: 0.3rem;">Analyzing nearby resources...</p>
+                        </div>
+                    </div>
+
                     <div class="dashboard-grid">
                         <!-- AI Risk Card -->
                         <div class="card risk-card">
@@ -269,10 +278,26 @@
                                 <h4>Resource Availability</h4>
                             </div>
                             <div class="resource-dash-grid">
-                                <div class="res-dash-item"><i class="fa-solid fa-bowl-food"></i> Food <span class="res-status available" id="dash-food">✅</span></div>
-                                <div class="res-dash-item"><i class="fa-solid fa-droplet"></i> Water <span class="res-status low" id="dash-water">⚠️</span></div>
-                                <div class="res-dash-item"><i class="fa-solid fa-kit-medical"></i> Medical <span class="res-status available" id="dash-med">✅</span></div>
-                                <div class="res-dash-item"><i class="fa-solid fa-fire-flame-simple"></i> LPG Gas <span class="res-status out" id="dash-gas">❌</span></div>
+                                <div class="res-dash-item">
+                                    <div class="res-dash-header"><i class="fa-solid fa-bowl-food" style="color:var(--success)"></i> <span>Food</span></div>
+                                    <div class="gauge-container"><div class="gauge-bar" style="width: 85%; background: var(--success);" id="dash-food"></div></div>
+                                    <div class="gauge-label">85% Available</div>
+                                </div>
+                                <div class="res-dash-item">
+                                    <div class="res-dash-header"><i class="fa-solid fa-droplet" style="color:var(--warning)"></i> <span>Water</span></div>
+                                    <div class="gauge-container"><div class="gauge-bar" style="width: 40%; background: var(--warning);" id="dash-water"></div></div>
+                                    <div class="gauge-label">40% Available</div>
+                                </div>
+                                <div class="res-dash-item">
+                                    <div class="res-dash-header"><i class="fa-solid fa-kit-medical" style="color:var(--success)"></i> <span>Medical</span></div>
+                                    <div class="gauge-container"><div class="gauge-bar" style="width: 90%; background: var(--success);" id="dash-med"></div></div>
+                                    <div class="gauge-label">90% Available</div>
+                                </div>
+                                <div class="res-dash-item">
+                                    <div class="res-dash-header"><i class="fa-solid fa-fire-flame-simple" style="color:var(--danger)"></i> <span>LPG Gas</span></div>
+                                    <div class="gauge-container"><div class="gauge-bar" style="width: 10%; background: var(--danger);" id="dash-gas"></div></div>
+                                    <div class="gauge-label text-red">Critical Shortage</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -291,42 +316,28 @@
                     </div>
                 </section>
 
-                <!-- NEW: Resources Page -->
-                <section id="resources-page" class="page-section hidden">
-                    <div class="card mb-4">
-                        <h4>Emergency Supply & Distribution Centers</h4>
-                        <p class="text-muted mb-4">Track the current status of all relief centers and distribution points.</p>
-                        
-                        <div class="resource-categories">
-                            <h5><i class="fa-solid fa-bowl-food" style="color:var(--primary)"></i> Food Supply Centers</h5>
-                            <div id="food-centers-list" class="resource-list mb-4">
-                                <!-- Populated by JS -->
-                            </div>
 
-                            <h5><i class="fa-solid fa-droplet" style="color:#0ea5e9"></i> Drinking Water Points</h5>
-                            <div id="water-points-list" class="resource-list mb-4">
-                                <!-- Populated by JS -->
-                            </div>
 
-                            <h5><i class="fa-solid fa-kit-medical" style="color:var(--danger)"></i> Medical Help</h5>
-                            <div id="medical-centers-list" class="resource-list mb-4">
-                                <!-- Populated by JS -->
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- NEW: Nearby Finder Page -->
+                <!-- NEW: Resource Tracker Page -->
                 <section id="nearby-page" class="page-section hidden">
                     <div class="card mb-4 highlight-card" style="border-left-color: var(--primary); background: rgba(59, 130, 246, 0.1);">
                         <i class="fa-solid fa-location-crosshairs" style="color: var(--primary);"></i>
                         <div>
-                            <strong>Nearby Availability Tracker</strong>
+                            <strong>Resource Tracker</strong>
                             <p style="font-size: 0.9rem; color: var(--text-muted);">Finding closest available resources based on your simulated GPS location.</p>
                         </div>
                     </div>
 
                     <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Safe Shelter</h5>
+                                <i class="fa-solid fa-house-medical"></i>
+                            </div>
+                            <div id="nearest-shelter" class="nearby-result">
+                                <!-- JS -->
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="card-header">
                                 <h5>Nearest Food</h5>
@@ -433,11 +444,11 @@
                     </div>
                 </section>
 
-                <!-- 5. Resource Tracker Page -->
+                <!-- 5. Resources Page -->
                 <section id="gas-page" class="page-section hidden">
                     <div class="card highlight-card mb-4" id="resource-alert">
                         <i class="fa-solid fa-circle-info"></i>
-                        <span><strong>Resource Tracker:</strong> Monitor live availability of LPG Gas and Essential Food Kits across distribution centers.</span>
+                        <span><strong>Resources:</strong> Monitor live availability of essential supplies and emergency centers across the region.</span>
                     </div>
                     
                     <div class="resource-grid">
@@ -453,6 +464,34 @@
                             <h4><i class="fa-solid fa-bowl-food" style="color:var(--success)"></i> Essential Food Kits</h4>
                             <p class="text-muted mb-2">Relief camps and food distribution points.</p>
                             <div id="food-list" class="resource-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resource-grid mt-4">
+                        <div class="card">
+                            <h4><i class="fa-solid fa-droplet" style="color:#0ea5e9"></i> Drinking Water Points</h4>
+                            <p class="text-muted mb-2">Municipal water tanks and RO plants.</p>
+                            <div id="water-list" class="resource-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h4><i class="fa-solid fa-kit-medical" style="color:var(--danger)"></i> Medical Centers</h4>
+                            <p class="text-muted mb-2">Hospitals, clinics, and pharmacies.</p>
+                            <div id="medical-list" class="resource-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resource-grid mt-4">
+                        <div class="card full-width">
+                            <h4><i class="fa-solid fa-house-medical" style="color:var(--success)"></i> Safe Shelters</h4>
+                            <p class="text-muted mb-2">Government relief camps and community halls.</p>
+                            <div id="shelter-list" class="resource-list">
                                 <!-- Populated by JS -->
                             </div>
                         </div>

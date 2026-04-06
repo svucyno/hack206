@@ -15,9 +15,9 @@ const mockData = {
     ],
 
     gasDistributors: [
-        { name: "Bharat Gas - Vizag Center", distance: "2.1 km", stock: "available", contact: "9876543210" },
-        { name: "HP Gas - Beach Road", distance: "3.5 km", stock: "low", contact: "9876543211" },
-        { name: "Indane Gas - Port Area", distance: "5.0 km", stock: "out", contact: "9876543212" }
+        { name: "Bharat Gas - Vizag Center", distance: "2.1 km", stock: "available", contact: "9876543210", lat: 17.7128, lng: 83.2285 },
+        { name: "HP Gas - Beach Road", distance: "3.5 km", stock: "low", contact: "9876543211", lat: 17.7250, lng: 83.3000 },
+        { name: "Indane Gas - Port Area", distance: "5.0 km", stock: "out", contact: "9876543212", lat: 17.6500, lng: 83.2000 }
     ],
 
     rescueRequests: [
@@ -51,22 +51,22 @@ const mockData = {
     },
 
     foodCenters: [
-        { name: "Govt Food Distribution Center", distance: "1.2 km", status: "available" },
-        { name: "Community Kitchen", distance: "2.5 km", status: "limited" },
-        { name: "SuperMarket Ration point", distance: "3.1 km", status: "unavailable" },
-        { name: "NGO Meal Camp", distance: "4.0 km", status: "available" }
+        { name: "Govt Food Distribution Center", distance: "1.2 km", status: "available", lat: 17.6950, lng: 83.2200 },
+        { name: "Community Kitchen", distance: "2.5 km", status: "limited", lat: 17.7100, lng: 83.2500 },
+        { name: "SuperMarket Ration point", distance: "3.1 km", status: "unavailable", lat: 17.7200, lng: 83.2700 },
+        { name: "NGO Meal Camp", distance: "4.0 km", status: "available", lat: 17.6700, lng: 83.2900 }
     ],
 
     waterPoints: [
-        { name: "Municipal Water Tank", distance: "0.8 km", status: "available" },
-        { name: "School RO Plant", distance: "1.5 km", status: "low" },
-        { name: "Main Reservoir", distance: "4.2 km", status: "critical" }
+        { name: "Municipal Water Tank", distance: "0.8 km", status: "available", lat: 17.6800, lng: 83.2100 },
+        { name: "School RO Plant", distance: "1.5 km", status: "low", lat: 17.6900, lng: 83.2300 },
+        { name: "Main Reservoir", distance: "4.2 km", status: "critical", lat: 17.7400, lng: 83.3100 }
     ],
 
     medicalCenters: [
-        { name: "KGH Hospital", distance: "5.5 km", status: "available" },
-        { name: "Local Clinic", distance: "1.0 km", status: "limited" },
-        { name: "Pharmacy Plus", distance: "0.5 km", status: "available" }
+        { name: "KGH Hospital", distance: "5.5 km", status: "available", lat: 17.7100, lng: 83.3000 },
+        { name: "Local Clinic", distance: "1.0 km", status: "limited", lat: 17.6850, lng: 83.2150 },
+        { name: "Pharmacy Plus", distance: "0.5 km", status: "available", lat: 17.6880, lng: 83.2190 }
     ],
 
     evacuationRoutes: [

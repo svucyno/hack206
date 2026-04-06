@@ -1,5 +1,5 @@
 // ============================================================
-//  Coastal Guard AI — Backend Server
+//  Crisis AI — Backend Server
 //  Built with Node.js + Express (beginner friendly!)
 //  Run with:  node server.js
 //  API runs on: http://localhost:4000
@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Coastal Guard AI — API Server</title>
+            <title>Crisis AI — API Server</title>
             <style>
                 body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
                 h1   { color: #3b82f6; }
@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
             </style>
         </head>
         <body>
-            <h1>🛡️ Coastal Guard AI — Backend API</h1>
+            <h1>🛡️ Crisis AI — Backend API</h1>
             <p>Server is running on port ${PORT}. 
                Visit <a href="http://localhost:3000">localhost:3000</a> for the frontend app.</p>
             <hr style="border-color:#334155">
@@ -89,7 +89,7 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'ok', 
-        message: 'Coastal Guard AI server is running 🛡️',
+        message: 'Crisis AI server is running 🛡️',
         version: '1.1.0',
         capabilities: ['weather', 'risk', 'family', 'gas', 'food', 'shelters', 'reports', 'sos', 'chat-proxy', 'sms-proxy', 'sms-direct']
     });
@@ -310,10 +310,77 @@ app.post('/api/chat', async (req, res) => {
         const OPENAI_KEY = process.env.OPENAI_API_KEY || 'YOUR_OPENAI_KEY_HERE';
         
         if (OPENAI_KEY.startsWith('YOUR_')) {
-            console.warn('OpenAI Key is missing. Returning mock response.');
-            return res.json({ 
-                response: `[MOCK AI] You asked: "${message}". In a real deployment, I would use OpenAI to give you a dynamic survival tip in English and Telugu.`
-            });
+            // ==========================================
+            // ADVANCED LOCAL NLP SIMULATOR (No API Key Required)
+            // Works like an AI agent by scoring user intent against a knowledge base
+            // ==========================================
+            const knowledgeBase = [
+                {
+                    intent: "flood_safety",
+                    keywords: ["flood", "water", "drown", "swim", "higher ground", "rain", "overflow"],
+                    response: "🌊 **Flood Safety:** Immediately move to higher ground. Do not walk, swim, or drive through flood waters. Turn around, don't drown! Just 6 inches of moving water can knock you down."
+                },
+                {
+                    intent: "cyclone_safety",
+                    keywords: ["cyclone", "hurricane", "wind", "storm", "tornado", "blow"],
+                    response: "🌀 **Cyclone Safety:** Stay indoors, away from windows. If your house isn't secure, use the 'Nearby Finder' to locate the nearest Safe Shelter. Board up windows if you have time."
+                },
+                {
+                    intent: "resource_gas",
+                    keywords: ["gas", "lpg", "cylinder", "cooking", "stove", "fuel"],
+                    response: "🔥 **Gas Shortage:** LPG cylinders are scarce during crises. Please navigate to the 'Resources' tab on the sidebar to view live availability across local hubs like Bharat Gas and HP Gas."
+                },
+                {
+                    intent: "resource_food",
+                    keywords: ["food", "hungry", "eat", "starving", "ration", "meal", "water", "drink", "thirsty"],
+                    response: "🍲 **Food & Water:** Govt relief camps are distributing essential food kits and clean drinking water. Check the 'Resources' tab for real-time stock levels near you."
+                },
+                {
+                    intent: "emergency_sos",
+                    keywords: ["help", "sos", "emergency", "dying", "hurt", "injured", "medical", "hospital", "doctor", "trauma", "save"],
+                    response: "🚨 **EMERGENCY:** If you are injured or in immediate danger, go to the SOS tab and click the pulsating SOS button right now. It will broadcast your GPS location to rescuers."
+                },
+                {
+                    intent: "evacuation",
+                    keywords: ["evacuate", "leave", "escape", "run", "where to go", "shelter"],
+                    response: "🛡️ **Evacuation:** Grab your emergency kit. Follow the 'Evacuation Guidance' routes listed in the SOS panel to reach the nearest Green Zone / Safe Shelter."
+                },
+                {
+                    intent: "telugu",
+                    keywords: ["telugu", "sahayam", "basha", "namaskaram"],
+                    response: "నమస్కారం! నేను క్రైసిస్ AI. మీకు సహాయం కావాలంటే దయచేసి 'SOS' బటన్‌ని నొక్కండి."
+                },
+                {
+                    intent: "identity",
+                    keywords: ["who are you", "what are you", "are you ai", "chatbot", "name"],
+                    response: "🤖 I am Crisis AI, an intelligent agent built to guide you through disaster scenarios with real-time data."
+                }
+            ];
+
+            const userWords = message.toLowerCase().replace(/[^\w\s]/g, '').split(' ');
+            let bestMatch = null;
+            let highestScore = 0;
+
+            for (const item of knowledgeBase) {
+                let score = 0;
+                for (const word of userWords) {
+                    if (item.keywords.includes(word)) score++;
+                }
+                if (score > highestScore) {
+                    highestScore = score;
+                    bestMatch = item;
+                }
+            }
+
+            let aiResponse = "🤖 I'm here to help. Please ask me a specific safety question (like 'what do I do in a flood?', 'where is food?', or 'how do I get help?').";
+            if (bestMatch && highestScore > 0) {
+                aiResponse = bestMatch.response;
+            }
+
+            // Simulate slight AI typing delay
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            return res.json({ response: aiResponse });
         }
 
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
@@ -389,7 +456,7 @@ app.post('/api/sms-direct', async (req, res) => {
 // ============================================================
 app.listen(PORT, () => {
     console.log('');
-    console.log('🛡️  Coastal Guard AI Backend is running!');
+    console.log('🛡️  Crisis AI Backend is running!');
     console.log(`🌐  API URL: http://localhost:${PORT}`);
     console.log(`✅  Health:  http://localhost:${PORT}/api/health`);
     console.log('');
