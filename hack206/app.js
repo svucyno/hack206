@@ -155,7 +155,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (targetId === 'gas-page') { loadGas(); loadFood(); loadAdditionalResources(); }
             if (targetId === 'reports-page') loadReports();
             if (targetId === 'sos-page') loadSOS();
-            if (targetId === 'dashboard') { loadRisk(); loadSmartSuggestions(); }
+            if (targetId === 'dashboard') { loadRisk(); loadSmartSuggestions(); loadDashboardAlerts(); }
+            if (targetId === 'admin-page') { loadAdminStats(); loadAdminFeeds(); }
         });
     });
 
@@ -629,23 +630,85 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- 11. Load Admin Stats ---
     async function loadAdminStats() {
-        if (!backendOnline) return;
-        
         try {
-            const [reports, sos, gas] = await Promise.all([
-                apiFetch('/reports'),
-                apiFetch('/sos'),
-                apiFetch('/gas')
+            const [reports, sos] = await Promise.all([
+                backendOnline ? apiFetch('/reports') : null,
+                backendOnline ? apiFetch('/sos') : null
             ]);
-            
-            const reportCount = document.querySelector('.card.stat-card:nth-child(3) .stat-number');
-            const sosCount    = document.querySelector('.card.stat-card:nth-child(1) .stat-number');
-            
-            if (reportCount && reports) reportCount.textContent = reports.length;
+            const sosCount    = document.querySelector('#admin-page .stat-card:nth-child(1) .stat-number');
+            const reportCount = document.querySelector('#admin-page .stat-card:nth-child(3) .stat-number');
             if (sosCount && sos) sosCount.textContent = sos.length;
-            
+            if (reportCount && reports) reportCount.textContent = reports.length;
         } catch (e) {
             console.warn('Admin stats sync failed');
+        }
+    }
+
+    // --- 11b. Load Dashboard Active Alerts ---
+    window.loadDashboardAlerts = async function() {
+        const list = document.getElementById('dashboard-alerts-list');
+        const badge = document.getElementById('alert-count-badge');
+        if (!list) return;
+
+        const sosList = (backendOnline && await apiFetch('/sos')) || window.mockData.rescueRequests || [];
+        const repsList = (backendOnline && await apiFetch('/reports')) || window.mockData.communityReports || [];
+
+        const allAlerts = [
+            ...sosList.map(s => ({ priority: 'HIGH', icon: 'fa-triangle-exclamation', color: 'var(--danger)', title: `SOS: ${s.location || 'Unknown'}`, time: s.time || 'Just now', type: 'SOS' })),
+            ...repsList.slice(0, 5).map(r => ({ priority: 'MEDIUM', icon: 'fa-file-lines', color: 'var(--warning)', title: `Report (${r.type || 'general'}): ${r.desc?.slice(0, 60) || ''}...`, time: r.time || 'Just now', type: 'Report' }))
+        ];
+
+        if (badge) badge.textContent = allAlerts.length;
+        if (allAlerts.length === 0) {
+            list.innerHTML = '<p class="text-muted" style="padding:1rem;">No active alerts.</p>';
+            return;
+        }
+
+        list.innerHTML = allAlerts.map(a => `
+            <div class="res-item" style="border-left: 3px solid ${a.color}; padding-left:0.75rem;">
+                <div>
+                    <strong><i class="fa-solid ${a.icon}" style="color:${a.color}"></i> [${a.priority}] ${a.type}</strong>
+                    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.2rem;">${a.title}</p>
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-muted);white-space:nowrap;">${a.time}</div>
+            </div>`).join('');
+    };
+
+    // --- 11c. Load Admin Live Feeds ---
+    async function loadAdminFeeds() {
+        const sosList = (backendOnline && await apiFetch('/sos')) || window.mockData.rescueRequests || [];
+        const repsList = (backendOnline && await apiFetch('/reports')) || window.mockData.communityReports || [];
+
+        const adminSosList = document.getElementById('admin-sos-list');
+        const adminRepsList = document.getElementById('admin-reports-list');
+        const adminSosCount = document.getElementById('admin-sos-count');
+        const adminRepsCount = document.getElementById('admin-reports-count');
+
+        if (adminSosCount) adminSosCount.textContent = sosList.length;
+        if (adminRepsCount) adminRepsCount.textContent = repsList.length;
+
+        if (adminSosList) {
+            adminSosList.innerHTML = sosList.length === 0 ? '<p class="text-muted">No SOS requests yet.</p>' :
+                sosList.map(s => `
+                    <div class="res-item" style="border-left:3px solid var(--danger);padding-left:0.75rem;">
+                        <div>
+                            <strong>${s.id || 'SOS'}</strong>
+                            <p style="font-size:0.85rem;color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> ${s.location || 'Unknown'}</p>
+                        </div>
+                        <div class="res-status out">${s.status || 'Needs Help'}</div>
+                    </div>`).join('');
+        }
+
+        if (adminRepsList) {
+            adminRepsList.innerHTML = repsList.length === 0 ? '<p class="text-muted">No reports yet.</p>' :
+                repsList.slice(0, 10).map(r => `
+                    <div class="res-item" style="border-left:3px solid var(--warning);padding-left:0.75rem;">
+                        <div>
+                            <strong>${r.user || 'Community Member'} — ${r.type || 'general'}</strong>
+                            <p style="font-size:0.85rem;color:var(--text-muted);">${r.desc || ''}</p>
+                        </div>
+                        <div style="font-size:0.8rem;color:var(--text-muted);">${r.time || 'Just now'}</div>
+                    </div>`).join('');
         }
     }
 
@@ -736,6 +799,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (result) {
                 showToast(`🚨 SOS SENT! Request ID: ${result.id}`, 'success');
                 await loadSOS();   // Refresh the rescue list
+                await loadDashboardAlerts(); // Also update dashboard
                 return;
             }
         }
@@ -773,6 +837,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showToast('✅ Report submitted successfully!', 'success');
                 document.getElementById('report-desc').value = '';
                 await loadReports();   // Refresh the feed
+                loadDashboardAlerts(); // Update dashboard alerts
                 return;
             }
         }
@@ -819,8 +884,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ============================================================
     await Promise.all([
         loadRisk(),
+        loadSmartSuggestions(),
+        loadDashboardAlerts(),
         loadFamily(),
-        loadReports(),
         loadSOS(),
         loadGas(),
         loadFood(),

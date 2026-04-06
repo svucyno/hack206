@@ -314,6 +314,19 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Active Alerts Panel -->
+                    <div class="row-2 mt-4">
+                        <div class="card full-width">
+                            <div class="card-header">
+                                <h4><i class="fa-solid fa-bell" style="color:var(--danger)"></i> Active Alerts <span id="alert-count-badge" class="badge-count">0</span></h4>
+                                <button class="btn btn-icon btn-small" onclick="loadDashboardAlerts()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                            </div>
+                            <div id="dashboard-alerts-list" style="max-height:260px;overflow-y:auto;">
+                                <p class="text-muted" style="padding:1rem;">No active alerts.</p>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
 
@@ -557,6 +570,29 @@
                             <div class="bar" style="height: 70%"></div>
                         </div>
                     </div>
+
+                    <!-- Live SOS Requests in Admin -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h4><i class="fa-solid fa-triangle-exclamation" style="color:var(--danger)"></i> Live SOS Requests</h4>
+                            <span id="admin-sos-count" class="badge-count text-red">0</span>
+                        </div>
+                        <div id="admin-sos-list" class="resource-list mt-2">
+                            <p class="text-muted">No SOS requests yet.</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Community Reports in Admin -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h4><i class="fa-solid fa-file-lines" style="color:var(--warning)"></i> Community Reports</h4>
+                            <span id="admin-reports-count" class="badge-count text-yellow">0</span>
+                        </div>
+                        <div id="admin-reports-list" class="resource-list mt-2">
+                            <p class="text-muted">No community reports yet.</p>
+                        </div>
+                    </div>
+
                     
                     <div class="card mt-4">
                         <h4>Resource Shortages Tracker</h4>

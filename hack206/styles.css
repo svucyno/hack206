@@ -1097,3 +1097,20 @@ body.show-app  #main-app   { display: flex !important; }
         grid-template-columns: 1fr;
     }
 }
+
+/* Alert Count Badge */
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--danger);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 0.15rem 0.55rem;
+    min-width: 22px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    animation: pulse 2s infinite;
+}
